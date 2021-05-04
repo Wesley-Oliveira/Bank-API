@@ -1,54 +1,30 @@
 const express =  require('express');
+const { v4: uuidv4 } = require('uuid');
 
 const app = express();
-
 app.use(express.json());
+const customers = [];
 
-app.get('/courses', (req, res) => {
-    const query = req.query;
-    console.log(query);
-    return res.json([
-        "Curso 1",
-        "Curso 2",
-        "Curso 3",
-    ]);
+app.post('/account', (req, res) => {
+    const { cpf, name } = request.body;
+
+    const customerAlreadyExists = customers.some(
+        (customer) => customer.cpf === cpf
+    );
+
+    if(customerAlreadyExists) {
+        return res.status(400).json({ error: "Customer already exists!" });
+    }
+
+    customers.push({
+        cpf,
+        name,
+        id: uuidv4(),
+        statement: [],
+    });
+
+    return res.status(201).send();
 })
 
-app.post("/courses", (req, res) => {
-    const body = req.body;
-    console.log(body);
-    return res.json([
-        "Curso 1",
-        "Curso 2",
-        "Curso 3",
-    ]);
-})
-
-app.put("/courses/:id", (req, res) => {
-    const { id } = req.params;
-    console.log(id);
-    return res.json([
-        "Curso 1",
-        "Curso 2",
-        "Curso 3",
-    ]);
-})
-
-
-app.patch("/courses/:id", (req, res) => {
-    return res.json([
-        "Curso 1",
-        "Curso 2",
-        "Curso 3",
-    ]);
-})
-
-app.delete("/courses/:id", (req, res) => {
-    return res.json([
-        "Curso 1",
-        "Curso 2",
-        "Curso 3",
-    ]);
-})
 
 app.listen(3333);
